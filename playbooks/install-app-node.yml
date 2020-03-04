@@ -1,0 +1,56 @@
+- name: Install node
+  hosts: aula
+  become: yes
+  # gather_facts: yes
+  vars:
+    file_dest: /usr/app
+    owner: root
+    group: root
+    mode: 0777
+  tasks:
+    # - name: mkdir
+    #   file:
+    #     path: "{{file_dest}}"
+    #     state: directory
+
+    # - name: install unzip
+    #   package:
+    #     name:
+    #       - unzip
+    #     state: present
+
+    # - name: download repo
+    #   get_url:
+    #     url: https://github.com/bgsouza/app_node2/archive/master.zip
+    #     dest: "{{file_dest}}"
+    #     mode: "{{mode}}"
+    #   register: download
+
+    # - name: zip repo
+    #   unarchive:
+    #     src: "{{file_dest}}/app_node2-master.zip"
+    #     dest: "{{file_dest}}"
+    #     remote_src: yes
+
+    # - name: Instalando nodeJS
+    #   package:
+    #     name:
+    #       - nodejs
+    #     state: present
+   
+    - name: install pm2
+      npm:
+        name: pm2
+        path: "{{file_dest}}/app_node2-master/node_modules"
+      #   url: https://github.com/bgsouza/app_node2/archive/master.zip
+      #   dest: "{{file_dest}}/app_node2-master"
+      #   mode: "{{mode}}"
+      # register: download
+
+    # - name: compilando app
+
+    # - name: gerenciador node pm2
+
+
+
+# {{path_app}}/{{app_name}}/app.js

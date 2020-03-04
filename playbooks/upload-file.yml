@@ -1,5 +1,5 @@
 - name: Upload Simple File
-  hosts: aula
+  hosts: localhost
   become: yes
   gather_facts: yes
   vars:
@@ -12,27 +12,35 @@
   tasks:
     - name: Upload file
       template:
-        src: "{{file_src}}"
-        dest: "{{file_dest}}"
-        owner: "{{owner}}"
-        group: "{{group}}"
-        mode: "{{mode}}"
-      register: upload_file
-
-    - name: Alterando conteudo do arquivo
-      blockinfile:
-        path: "{{file_dest}}/{{file_src}}"
-        insertafter: ''
-        marker: "# {mark} ANSIBLE MANAGED BLOCK"
-        content: |
-          conteudo editado pelo ansible
-      when: upload_file is success
-
-    - name: Upload config.json
-      template:
         src: "{{file_config}}"
         dest: "{{file_dest}}"
         owner: "{{owner}}"
         group: "{{group}}"
         mode: "{{mode}}"
       register: upload_file
+
+    - name: Troca texto
+      replace:
+        path: "{{file_dest}}/{{file_config}}"
+        backup: true
+        regexp: "development"
+        replace: "production"
+      when: upload_file is success
+
+#    - name: Alterando conteudo do arquivo
+#      blockinfile:
+#        path: "{{file_dest}}/{{file_src}}"
+#        insertafter: ''
+#        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+#        content: |
+#          conteudo editado pelo ansible
+#      when: upload_file is success
+
+  #  - name: Upload config.json
+#      template:
+#        src: "{{file_config}}"
+#        dest: "{{file_dest}}"
+#        owner: "{{owner}}"
+#        group: "{{group}}"
+#        mode: "{{mode}}"
+#      register: upload_file
